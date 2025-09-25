@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: api-gateway
+
+
+# Eureka Client Configuration
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    registry-fetch-interval-seconds: 30
+    instance-info-replication-interval-seconds: 30
+
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    instance-id: ${spring.application.name}:${random.int}
+    metadata-map:
+      version: 1.0.0
+      region: us-east-1
+      zone: zone-1
+
+# Server Configuration
+server:
+  port: 8090
+
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.springframework.cloud.gateway: trace
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: info
+
+# Circuit Breaker Configuration (Resilience4j)
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      vendor-service-cb:
+#        failure-rate-threshold: 50
+#        wait-duration-in-open-state: 10s
+#        ring-buffer-size-in-half-open-state: 3
+#        ring-buffer-size-in-closed-state: 5
+#        automatic-transition-from-open-to-half-open-enabled: true
+#      product-catalog-cb:
+#        failure-rate-threshold: 60
+#        wait-duration-in-open-state: 15s
+#        ring-buffer-size-in-half-open-state: 5
+#        ring-buffer-size-in-closed-state: 10
+#      order-service-cb:
+#        failure-rate-threshold: 40
+#        wait-duration-in-open-state: 20s
+#        ring-buffer-size-in-half-open-state: 3
+#        ring-buffer-size-in-closed-state: 8
+#      payment-service-cb:
+#        failure-rate-threshold: 30
+#        wait-duration-in-open-state: 30s
+#        ring-buffer-size-in-half-open-state: 2
+#        ring-buffer-size-in-closed-state: 5
+#
+#  timelimiter:
+#    instances:
+#      vendor-service-cb:
+#        timeout-duration: 3s
+#      product-catalog-cb:
+#        timeout-duration: 5s
+#      order-service-cb:
+#        timeout-duration: 10s
+#      payment-service-cb:
+#        timeout-duration: 15s

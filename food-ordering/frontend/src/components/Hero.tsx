@@ -1,0 +1,12 @@
+import  hero from "../assets/hero.png";
+
+
+export  default function Hero(){
+    return(
+        <div>
+            <img src={hero}
+                 className="w-full h-[600px] object-cover"
+                 alt="hero image"/>
+        </div>
+    );
+}

@@ -1,0 +1,65 @@
+spring:
+  profiles:
+    active: native
+  application:
+    name: discovery-service
+
+
+
+eureka:
+  instance:
+    hostname: localhost
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+    metadata-map:
+      instanceId: ${spring.application.name}:${random.value}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    healthcheck:
+      enabled: true
+  server:
+    enableSelfPreservation: true
+    evictionIntervalTimerInMs: 30000
+    renewal-percent-threshold: 0.85
+    waitTimeInMsWhenSyncEmpty: 0
+
+server:
+  port: 8761
+  error:
+    include-stacktrace: never
+    include-message: always
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+    shutdown:
+      enabled: false
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+
+
+logging:
+  level:
+    root: info
+    com.netflix.eureka: info
+    com.netflix.discovery: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/discovery-service.log
+    max-size: 10MB
+    max-history: 7

@@ -1,0 +1,70 @@
+
+spring:
+#  profiles:
+#    active: dev
+  application:
+    name: discovery-service
+
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
+    instance-id: ${spring.application.name}:${server.port}
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 4000
+    renewal-percent-threshold: 0.85
+    registry-sync-retries: 3
+    response-cache-auto-expiration-in-seconds: 180
+    response-cache-update-interval-ms: 30000
+    peer-node-connect-timeout-ms: 200
+    peer-node-read-timeout-ms: 200
+    disable-delta: false
+
+
+server:
+   port: 8761
+
+logging:
+  level:
+    root: info
+    com.netflix.eureka: debug
+    com.netflix.discovery: debug
+    org.springframework.cloud: debug
+    org.springframework.web: info
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/discovery-service.log
+    max-size: 10MB
+    max-history: 30
+# Management and Monitoring
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,metrics,env,configprops,eureka
+#      base-path: /actuator
+#  endpoint:
+#    health:
+#      show-details: always
+#    info:
+#      enabled: true
+#    metrics:
+#      enabled: true
+#  info:
+#    env:
+#      enabled: true
+#    properties:
